@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+
+<body>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../../js/react.development.js"></script>
+  <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../../js/babel.min.js"></script>
+
+  <script type="text/babel">
+
+    /* 
+     面试题： setState是同步还是异步？
+            答案：setState即是同步也是异步，看情况：
+              1. 如果在生命周期函数、React合成事件回调函数中，setState是异步的
+                多次setState（最后一次生效）
+              2. 如果在定时器、原生DOM事件回调函数中，setState是同步的  
+    
+              this.setState({xxx}) 
+              this.setState(() => {}) 
+              this.setState({xxx}, () => {})  后面回调函数更新流程全部完毕后才触发（componentDidUpdate）
+    */
+
+    class Test extends React.Component {
+      state = { num: 1 }
+      btnRef = React.createRef();
+
+      /* setState在生命周期函数&定时器中 */
+      componentDidMount() {
+        // 异步更新
+        this.setState({  //多次调用。第一次不会触发render函数，也不会更新
+          num: this.state.num + 1
+        })
+
+        console.log("生命周期第一次setState +1:", this.state.num); // 1 
+
+        this.setState({   //使用setState({})传递一个参数，只有最后一次会被执行
+          num: this.state.num + 2
+        })
+
+        console.log("生命周期第二次setState: +2", this.state.num); // 1
+
+        setTimeout(() => {  //后执行， 异步代码会等setState更新完才执行，所以在定时器中setState是同步的
+          console.log("setTimeout中:", this.state.num); // 3
+          // 同步更新
+          this.setState({
+            num: this.state.num + 1
+          })
+
+          console.log("setTimeout： 第一次setState:", this.state.num); // 4
+
+          this.setState({
+            num: this.state.num + 1
+          })
+
+          console.log("setTimeout： 第二次setState:", this.state.num); // 5
+        }, 0)
+      }
+
+      render() {
+        // 多次setState会合并成一次（最后一次生效）
+        console.log("render中: ", this.state.num); // 1 2 setState被调用了4次所以渲染了4次
+        return <div>
+          <p>{this.state.num}</p>
+          <button onClick={this.handleClick}>React合成事件</button>
+          <button ref={this.btnRef}>原生DOM事件</button>
+        </div>
+      }
+    }
+
+    ReactDOM.render(<Test />, document.getElementById('example'));
+
+  </script>
+</body>
+
+</html>

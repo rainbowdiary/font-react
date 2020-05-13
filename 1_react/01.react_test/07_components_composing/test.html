@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>05_components_composing</title>
+</head>
+<body>
+
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/prop-types.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /*
+      组件化编码流程：
+        1. 拆分组件
+          按照js功能或用户界面变化来拆分组件。 默认最外面有一个App组件
+          App / AddTodo / TodoList
+        2. 实现静态组件
+          定义三个组件
+          将组件的结构和样式写死  
+        3. 实现动态组件
+          1. 要不要定义state? 看用户界面有没有变化，如果有就要定义
+          2. state的值是什么? 如果变化的内容是一个列表数据，一般state定义数组  
+          3. state定义在哪个组件? 
+            如果只有一个组件使用，就定义在单个组件内部
+            如果有多个组件使用，就定义在多个组件的公共父组件中
+          4. 先实现数据的动态展示。在实现其他功能
+          5. 操作state数据方法定义在哪？
+            state在哪里，操作数据的方法就定义在哪里
+
+    */
+
+    class App extends React.Component {
+      constructor() {
+        super();
+        // 初始化状态数据
+        this.state = {
+          todos: [
+            '吃饭~~', '睡觉~~', '打豆豆~~'
+          ]
+        }
+      }
+
+      // 添加todo方法
+      add = (todo) => {
+        // 更新state
+        // 不能修改原数据，只能产生一份新数据
+        this.setState({
+          todos: [todo, ...this.state.todos]
+        })
+      }
+
+      render() {
+        // 读取状态数据
+        const { todos } = this.state;
+
+        return <div>
+          <h1>Simple Todo List</h1>
+          <AddTodo add={this.add} length={todos.length}/>
+          {/* 组件外向组件内以标签属性（props）方式传递变化数据 */}
+          <TodoList todos={todos}/>
+        </div>
+      }
+    }
+
+    class AddTodo extends React.Component {
+      static propTypes = {
+        add: PropTypes.func.isRequired,
+        length: PropTypes.number.isRequired
+      }
+
+      constructor() {
+        super();
+        // 初始化ref
+        this.inputRef = React.createRef();
+      }
+
+      // 点击事件的回调函数 
+      addTodo = () => {
+        // 获取DOM元素
+        const input = this.inputRef.current;
+        // 获取值
+        const todo = input.value.trim();
+
+        if (todo) {
+          // 添加数据
+          this.props.add(todo);
+          // 清空数据
+          input.value = '';
+        }
+
+      }
+
+      render() {
+        return <div>
+          <input type="text" ref={this.inputRef}/>
+          <button onClick={this.addTodo}>Add #{this.props.length}</button>
+        </div>
+      }
+    }
+
+    class TodoList extends React.Component {
+      static propTypes = {
+        todos: PropTypes.array.isRequired
+      }
+
+      render() {
+        // 获取props
+        const { todos } = this.props;
+
+        return <ul>
+          {/* 遍历展示 */}
+          {
+            todos.map((todo, index) => <li key={index}>{todo}</li>)
+          }
+        </ul>
+      }
+    }
+
+    // 渲染
+    ReactDOM.render(<App />, document.getElementById('example'));
+
+
+  </script>
+</body>
+</html>

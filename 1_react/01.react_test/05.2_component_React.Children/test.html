@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>04_component_props</title>
+</head>
+
+<body>
+
+  <div id="example1"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script src="../js/prop-types.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+
+  <script type="text/babel">
+
+    /* props.children 和 React.Children 
+       1. props.chidlren
+       用法:
+        ```
+        <Parent name="parent" id="hello"><C1></C1><C2></C2><C3></C3></Parent>
+        ```
+        Parent父组件的props就会有children属性
+        console.log(props.children) {name="parent", id="hello", children: 子组件的数组}
+       
+       2. React.Children ： 把父组件中的属性传给所有的子组件
+    */
+
+
+
+    /* 案例：
+    把几个Radio组合起来，合成一个RadioGroup,这就要求所有的Radio具有同样的name属性值。
+    可以这样设计：
+    把Radio看做子组件，RadioGroup看做父组件，name的属性值在RadioGroup这个父组件中设置。
+     */
+
+    //子组件
+    function Radio(props) {
+      return (
+        <label>
+          <input type="radio" value={props.value} name={props.name} />
+          {props.label}
+        </label>
+      )
+    }
+    // 然后是父组件，不仅需要把它所有的子组件显示出来，还需要为每个子组件赋上name属性和值：
+    //父组件用,props是指父组件的props
+    function renderChildren(props) {
+      //遍历所有子组件
+      return React.Children.map(props.children, child => {
+        console.log(child); //{label: "选项一", value: "1"}虚拟DOM映射真是DOM
+        if (child.type === Radio)
+          return React.cloneElement(child, {
+            //把父组件的props.name赋值给每个子组件
+            name: props.name
+          })
+        else
+          return child
+      })
+    }
+    //父组件
+    function RadioGroup(props) {
+      console.log('RadioGroup', props);
+      return (
+        <div>
+          {renderChildren(props)}
+        </div>
+      )
+    }
+    function App() {
+      return (
+        <RadioGroup name="hello" id="1">
+          <Radio label="选项一" value="1" />
+          <Radio label="选项二" value="2" />
+          <Radio label="选项三" value="3" />
+        </RadioGroup>
+      )
+    }
+    // 渲染
+    // 通过标签属性方式，向组件内传递数据
+    ReactDOM.render(<App />, document.getElementById('example1'));
+
+  </script>
+</body>
+
+</html>

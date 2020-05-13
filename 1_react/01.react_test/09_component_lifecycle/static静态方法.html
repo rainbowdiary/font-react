@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class A {
+      a = "hello"
+      static name(param) { //不需要实例化类，即可直接通过该类来调用的方法，即称之为“静态方法”。（类上的方法，而不是实例化类上的方法）
+        console.log(param);
+        return "我是A类中的，实例方法，无须实例化，可直接调用！"
+      }
+    }
+
+    const test = new A
+    console.log(A.name("hello"));
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+  <style>
+    .pickColor {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/babel">
+    /*getDerivedStateFromProps
+           让props更新组件内部的state
+              1. 调用render方法之前调用，初始化挂载和更新都会被调用
+              2. 返回新的对象，更新state，返回null则不更新
+              3. 静态方法，无法访问组件实例对象
+                 可以通过提取组件props的纯函数及class之外的状态，
+                 在getDerivedStateFromProps()和其他 class 方法之间重用代码。
+                 意思是：不能访问this实例对象，要复用代码只能在在getDerivedStateFromProps之外
+           使用： 
+              4. 当state值取决于props就使用。如果不相关，就不会用。
+   
+           使用场景：
+             1. 无条件的根据props更新内部的state，只要有传入props值，就更新state
+             2. 只有porps值和state值不同时才更新state值
+         */
+
+    /* 颜色选择器，能选择相应的颜色显示，根据传入的props显示颜色 */
+    class ColorPicker extends React.Component {
+      state = {
+        color: '#000000'
+      }
+      static getDerivedStateFromProps(props, state) { //static方法：不需要实例化类，即可直接通过该类来调用的方法，即称之为“静态方法”。（类上的方法，而不是实例化类上的方法）
+        console.log(props, state);
+        if (props.color !== state.color) {
+          console.log(props.color);
+          return { //返回一个state对象
+            color: props.color
+          }
+        }
+        return null
+      }
+      // ... // 选择颜色方法
+      render() {
+        console.log("state已经更新为：", this.state.color);
+        return (
+          // 显示颜色和选择颜色操作
+          <div style={{ color: this.state.color }} className="pickColor"> hello world! <br />
+            根据父组件传递过来的props颜色更新state
+          </div >
+        )
+      }
+    }
+
+    class Father extends React.Component {
+      render() {
+        return (
+          <ColorPicker color="green" />
+        )
+      }
+    }
+
+
+    ReactDOM.render(<Father />, document.getElementById('example'));
+
+
+  </script>
+</body>
+
+</html>

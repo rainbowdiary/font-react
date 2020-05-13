@@ -1,0 +1,41 @@
+.card2 {
+  height: auto;
+  background-color: white;
+  padding: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.card2 nav {
+  color: red;
+  text-align: left;
+  font-family: 'Arial Normal', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 0.2rem;
+}
+
+.card2 div {
+  color: #999999;
+  font-family: 'Arial Normal', 'Arial';
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+}
+
+.list1 {
+  text-align: left;
+  display: flex;
+}
+
+.list1>span {
+  display: inline-block;
+  vertical-align: top;
+  flex: 1;
+}
+
+.details {
+  float: right;
+  color: #2DA9FA;
+}

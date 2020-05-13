@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+
+<body>
+  <div id="example"></div>
+
+  <script type="text/javascript" src="../../js/react.development.js"></script>
+  <script type="text/javascript" src="../../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../../js/babel.min.js"></script>
+
+  <script type="text/babel">
+
+    /* 
+     面试题： setState是同步还是异步？
+            答案：setState即是同步也是异步，看情况：
+              1. 如果在生命周期函数、React合成事件回调函数中，setState是异步的
+                多次setState会合并成一次（最后一次生效）
+              2. 如果在定时器、原生DOM事件回调函数中，setState是同步的  
+    
+              this.setState({xxx}) 
+              this.setState(() => {})  保证多次调用都会生效
+              this.setState({xxx}, () => {})  后面回调函数更新流程全部完毕后才触发（componentDidUpdate）
+    */
+
+
+    /* 在生命周期函数多次调用最后一次生效，怎么让他每次都生效？ 
+       解决： setState传递函数
+    */
+    class Test extends React.Component {
+      state = { num: 1 }
+      btnRef = React.createRef();
+
+      /* setState在生命周期函数中 */
+      componentDidMount() {
+        this.setState((prevState) => {
+          console.log("第一个setStateFn：", prevState); // { num: 1 }
+          return {
+            num: prevState.num + 1
+          };
+        })
+
+        console.log("setState中间的代码：this.state.num：", this.state.num); // 1
+
+        this.setState((prevState) => {
+          console.log("第二个setStateFn：", prevState);
+          return {
+            num: prevState.num + 1
+          };
+        })
+
+        console.log("setState之后的代码：this.state.num：", this.state.num); // 先执行
+
+      }
+
+      render() {
+        console.log('render');
+        console.log(this.state.num); // 3 setState传递函数，多次调用都生效
+        return <div>
+          <button onClick={this.handleClick}>React合成事件</button>
+          <button ref={this.btnRef}>原生DOM事件</button>
+        </div>
+      }
+    }
+
+    ReactDOM.render(<Test />, document.getElementById('example'));
+
+  </script>
+</body>
+
+</html>

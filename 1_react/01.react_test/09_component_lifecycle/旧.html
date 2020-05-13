@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>10_ComponentLife</title>
+</head>
+<body>
+<div id="example"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">
+  /*
+  需求: 自定义组件
+    1. 让指定的文本做显示/隐藏的动画
+    2. 切换时间为2S
+    3. 点击按钮从界面中移除组件界面
+   */
+
+  class LifeCircle extends React.Component {
+    /*
+      1. 初始化state （可以简写）
+      2. 初始化ref （可以简写）
+      3. 绑定函数的this指向 （用箭头函数取代）
+
+      基本不用constructor
+    */
+    constructor() {
+      super();
+      console.log('constructor');
+    }
+
+    /*
+      组件将要挂载
+      基本没啥用了（即将被废弃）
+    */
+    componentWillMount() {
+      console.log('componentWillMount');
+    }
+    /*
+      组件已经挂载
+        1. 发送ajax请求
+        2. 设置定时器等。。
+        3. 一次性的操作。
+
+        constructor / componentWillMount / componentDidMount在组件的一生中只会执行一次
+
+        问题：请求为什么在DidMount发，而不是WillMount？
+          1. 只有DidMount才能操作DOM
+          2. 为了加快渲染速度
+    */
+    componentDidMount() {
+      console.log('componentDidMount');
+    }
+
+    shouldComponentUpdate() {
+      console.log('shouldComponentUpdate');
+      /*
+        作用：用来做React性能优化，减少重新渲染次数
+        对比新旧的props和新旧state差异，只要有一个不一样，就更新
+        只有全部都相等，就不更新
+      */
+      // 更新
+      return true;
+      // 不更新
+      // return false;
+    }
+
+    /*
+      即将被废弃
+    */
+    componentWillUpdate() {
+      console.log('componentWillUpdate');
+    }
+
+    componentDidUpdate() {
+      console.log('componentDidUpdate');
+    }
+    /*
+      组件将要卸载
+        做一些收尾工作：清除定时器，取消ajax请求。
+    */
+    componentWillUnmount() {
+      console.log('componentWillUnmount');
+    }
+
+    handleClick = () => {
+      // this.setState({});
+      ReactDOM.unmountComponentAtNode(document.getElementById('example'))
+    }
+
+    /*
+      返回一个要渲染的虚拟DOM对象
+    */
+    render() {
+      console.log('render');
+      
+      return <h1 onClick={this.handleClick}>LifeCircle</h1>;
+    }
+  }
+
+  ReactDOM.render(<LifeCircle />, document.getElementById('example'));
+
+
+</script>
+</body>
+</html>

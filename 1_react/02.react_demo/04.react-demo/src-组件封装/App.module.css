@@ -1,0 +1,12 @@
+.test {
+  font-size: 24px;
+  font-weight: 200;
+}
+
+#mydiv{
+  width:200px;
+  height:80px;
+  background-color:yellow;
+  font-size:24px;
+  text-align:center
+  }
