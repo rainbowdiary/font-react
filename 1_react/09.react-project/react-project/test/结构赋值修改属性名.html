@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const a = { menus: { name: "手机", price: "3000" } }
+    const { menus: authMenus } = a;  //:冒号是重命名；
+    console.log("authMenus:", authMenus);  //authMenus: {name: "手机", price: "3000"}
+    console.log(a) //{menus: {…}}
+
+
+  </script>
+</body>
+
+</html>
