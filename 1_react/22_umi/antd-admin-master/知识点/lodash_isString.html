@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    console.log(_.isString("123")); //true 判断是否是原始字符串string或对象
+    console.log(_.isString({ pathname: "dashboard" })); //false
+
+    /* 案例 
+    封装跳转路由方法router，
+    判断是否带上了语言路径，没有就带上语言路径再跳转
+    */
+
+    export const langFromPath = pathname => { // pathname=/en/exception/403
+      for (const item of languages) {
+        if (pathname.startsWith(`/${item}/`)) {
+          return item
+        }
+      }
+      return defaultLanguage
+    }
+
+    /* lodash 用来柯里化的函数
+    curry((languages, pathname) => { })(languages)(pathname) 返回第一个函数参数的返回值 */
+    export const deLangPrefix = curry( //
+      /**
+       * Remove the language prefix in pathname.
+       * @param   {array}     languages  Specify which languages are currently available.
+       * @param   {string}    pathname   Remove the language prefix in the pathname.
+       * @return  {string}    Return the pathname after removing the language prefix.
+       */
+      (languages, pathname) => {
+        if (!pathname) {
+          return
+        }
+        for (const item of languages) {
+          if (pathname.startsWith(`/${item}/`)) {
+            return pathname.replace(`/${item}/`, '/')
+          }
+        }
+
+        return pathname
+      }
+    )(languages)
+
+    /**
+     * Add the language prefix in pathname.
+     * @param   {string}    pathname   Add the language prefix in the pathname.
+     * @return  {string}    Return the pathname after adding the language prefix.
+     */
+    export function addLangPrefix(pathname) { //pathname='/dashboard'
+      if (!i18n) {
+        return pathname
+      }
+
+      const prefix = langFromPath(window.location.pathname)  //window.location.pathname除了域名以外的当前路径/en/exception/403
+      return `/${prefix}${deLangPrefix(pathname)}`
+    }
+
+    const routerAddLangPrefix = params => { //params={pathname: '/dashboard',}
+      if (!i18n) {
+        return params
+      }
+      if (isString(params)) { //对象输出false
+        params = addLangPrefix(params)
+      } else {
+        params.pathname = addLangPrefix(params.pathname)
+      }
+      return params
+    }
+
+    /**
+     * Adjust the router to automatically add the current language prefix before the pathname in push and replace.
+     */
+    /* flow(f1,f2...) f1的参数是flow返回值的参数,f2的参数是f1返回值的参数 */
+    const myRouter = { ...umiRouter }
+
+    myRouter.push = flow(
+      routerAddLangPrefix,
+      umiRouter.push
+    )
+
+    myRouter.replace = flow(
+      routerAddLangPrefix,
+      myRouter.replace
+    )
+
+    export const router = myRouter   //跳转路径的方法
+
+    /* 其他组件使用
+     router.push({pathname: '/dashboard',})
+    */
+
+  </script>
+</body>
+
+</html>

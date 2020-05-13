@@ -1,0 +1,1 @@
+umi 里约定 src/models 下的 model 会被自动注入，你无需手动注入。

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 如果url带了域名，去除域名，拿到不带域名的url */
+
+    let url = "http://baidu.com/api/v1/user/:id";
+    let domain = ''
+    const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/) //匹配带了域名的url"http://baidu.com/api/v1/user/:id".match(/[a-zA-z]+:\/\/[^/]*/)
+    console.log(urlMatch);
+    /* ["http://baidu.com", index: 0, input: "http://baidu.com/api/v1/user/:id", groups: undefined] */
+    if (urlMatch) {
+      ;[domain] = urlMatch //domin="http://baidu.com"
+      url = url.slice(domain.length) //"/api/v1/user/:id" 让url为去除域名的url
+    }
+
+
+
+    /* 知识点 */
+    var a = "";
+    [a] = [1, 2, 3]
+    console.log(a) //则a=1，数组的第一位
+  </script>
+</body>
+
+</html>

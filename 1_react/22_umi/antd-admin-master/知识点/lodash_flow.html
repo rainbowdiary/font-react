@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    /* 
+    _.flow(fn)
+    创建一个函数。 
+    返回的结果是调用提供函数的结果，
+    this 会绑定到创建函数。 
+    每一个连续调用，传入的参数都是前一个函数返回的结果。
+    返回一个函数
+
+    用法: flow([f1,f2,f3...]) 返回一个函数
+    f1的参数是flow()返回的函数的参数
+    f2的参数是f1的返回值
+    ..。
+     */
+    function square(n) {
+      return n * n;
+    }
+
+    var addSquare = _.flow([_.add, square]); //square的参数是_.add返回的结果
+    console.log(addSquare);
+    console.log(addSquare(2, 4)); // => 36
+  </script>
+
+
+
+
+  <!-- 案例 -->
+  <!--     myRouter.push = flow(
+      routerAddLangPrefix,
+      umiRouter.push
+    )
+
+    myRouter.replace = flow(
+      routerAddLangPrefix,
+      myRouter.replace
+    ) -->
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const obj = {
+      a: "1",
+      b: true,
+      c: [1, 2, 3],
+      d: { d: "d" },
+      e: function (params) {
+        console.log(params);
+      }
+    }
+    // 深度克隆
+    const newObj = _.cloneDeep(obj);
+
+    console.log(obj, newObj); 
+  </script>
+</body>
+
+</html>

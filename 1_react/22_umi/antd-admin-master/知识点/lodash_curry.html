@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcss.com/lodash.js/4.17.15/lodash.min.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /* 柯里化函数：
+      curry(函数fn)
+        接收一个函数fn为参数
+          调用一次返回函数参数fn
+          调用两次（调用函数返回的结果）
+              第二次调用的参数为函数参数fn第一个参数
+          调用三次curry(fn(t1,t2,t3))(t1)(t2)(t3)
+            t1为函数参数fn第一个参数
+            t2为函数参数fn第二个参数
+            t3为函数参数fn第三个参数
+          */
+    /* 测试 */
+    var fn = function (test, test1) {
+      console.log(test, test1); //hello world
+      return [1, 2, 3]
+    }
+    var curries = _.curry(fn)('hello')('world');
+    console.log(curries); //拿到函数参数fn返回值
+
+  </script>
+</body>
+
+</html>
