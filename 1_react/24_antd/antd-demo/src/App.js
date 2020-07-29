@@ -1,11 +1,13 @@
 import React from "react";
 // import UploadC from "./components/upload"
 import MoneyInput from "./components/money-input";
+import Table from "./components/table";
 function App() {
   return (
     <div>
-      App
-      <MoneyInput />
+      {/* App */}
+      {/* <MoneyInput /> */}
+      <Table />
     </div>
   );
 }
