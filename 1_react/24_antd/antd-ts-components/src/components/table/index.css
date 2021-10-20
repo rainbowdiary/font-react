@@ -1,0 +1,79 @@
+/* 表格分为两部分，左边固定列和右边表格
+左边固定列宽度为60px；右边为70px，右边因为要加边框 所以就是68+2px（左右边框） */
+body {
+  overflow: hidden;
+}
+table::-webkit-scrollbar {
+  display: none;
+}
+thead,
+tbody {
+  overflow: hidden;
+  background-color: #ffffff;
+}
+th,
+td p {
+  width: 68px;
+  height: 40px;
+  display: inline-block;
+  line-height: 20px;
+  padding: auto 0;
+  margin: auto 0;
+  vertical-align: middle;
+  white-space: normal;
+}
+tr {
+  height: 40px;
+}
+th {
+  background-color: #cbcdc8;
+}
+td {
+  border: 1px solid;
+}
+.pages {
+  height: 100%;
+  overflow: hidden;
+}
+.content1 {
+  height: 450px;
+  overflow: hidden;
+  margin: 5px;
+}
+/* 固定列的宽度为60 */
+.left-content {
+  width: 60px;
+  float: left;
+  text-align: center;
+  border-top: 1px solid;
+}
+.left-content p {
+  width: 60px;
+  height: 40px;
+  word-wrap: break-word;
+}
+.right-content {
+  border-top: 1px solid;
+}
+/* 去掉表格的重复边框 */
+.full-table {
+  border: 0px;
+  border-collapse: collapse;
+}
+.table-body {
+  width: 100%;
+  overflow: auto;
+}
+.table {
+  height: 450px;
+  overflow: auto;
+}
+/* 表头 */
+.table-head {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.table-head th {
+  width: 69px;
+  border-left: 1px solid;
+}
